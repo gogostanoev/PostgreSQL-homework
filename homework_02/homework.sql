@@ -99,4 +99,4 @@ ALTER TABLE Product
 ADD CONSTRAINT check_price_cost CHECK (Price >= Cost * 1.2);
 
 ALTER TABLE Product
-ADD CONSTRAINT unique_description UNIQUE (Description);
+ADD CONSTRAINT unique_description UNIQUE (Description); 
