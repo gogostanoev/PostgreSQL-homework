@@ -16,7 +16,7 @@ WHERE facid in (1, 5);
 
 SELECT joindate
 FROM members
-ORDER BY memid DESC
+ORDER BY joindate DESC
 LIMIT 1;
 
 
@@ -25,7 +25,7 @@ LIMIT 1;
 
 SELECT firstname, surname
 FROM members
-ORDER BY memid DESC
+ORDER BY joindate DESC
 LIMIT 3;
 
 
@@ -33,9 +33,10 @@ LIMIT 3;
 -- 7. Produce a list of the total number of slots booked per facility. For now, just produce an output table consisting of facility id and slots, sorted by facility id.
 
 SELECT facid,
-COUNT(slots)
+SUM(slots)
 FROM bookings
-GROUP BY facid;
+GROUP BY facid
+ORDER BY facid;
 
 
 
@@ -48,7 +49,8 @@ FROM bookings;
 
 -- 9. Produce a monotonically increasing numbered list of members (including guests), ordered by their date of joining. Remember that member IDs are not guaranteed to be sequential.
 
-SELECT memid, joindate
+SELECT
+memid, joindate, row_number () OVER (order by joindate) as row_num
 FROM members
 ORDER BY joindate;
 
@@ -66,13 +68,12 @@ WHERE mem.firstname = 'David' AND mem.surname = 'Farrell';
 
 -- 11. How can you produce a list of the start times for bookings for tennis courts, for the date '2012-09-21'? Return a list of start time and facility name pairings, ordered by the time
 
-SELECT starttime
+SELECT starttime, fac.name
 FROM bookings AS book
 INNER JOIN facilities AS fac
 ON book.facid = fac.facid
 WHERE fac.name LIKE '%Tennis Court%'
-AND book.starttime >= '2012-09-21'
-AND book.starttime < '2012-09-22'
+AND book.starttime::date = '2012-09-21'
 ORDER BY book.starttime;
 
 
