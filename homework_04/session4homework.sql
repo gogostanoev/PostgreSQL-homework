@@ -21,7 +21,8 @@ FROM "Order";
 
 -- Concatenate the name, region and zipcode from every business entity and add the delimiter ‘; ‘ between them.
 
-SELECT name || '; ' || region || '; ' || zipcode as ConcatColumn
+SELECT 
+CONCAT (name, '; ', region, '; ', zipcode) AS ConcatColumn
 FROM businessentity;
 
 
@@ -96,9 +97,9 @@ od.quantity AS quantity,
 be.name AS business_entity_name
 
 FROM "Order" AS o 
-JOIN orderdetails od ON o.id = od.orderid
-JOIN product p ON od.productid = p.id
-JOIN businessentity AS be ON o.businessentityid = be.id
+INNER JOIN orderdetails od ON o.id = od.orderid
+INNER JOIN product p ON od.productid = p.id
+INNER JOIN businessentity AS be ON o.businessentityid = be.id
 WHERE o.employeeid = order_by_employee;
 
 END;
